@@ -16,7 +16,7 @@ end
 ---it's used in scenarios where we want to use the path as a filename
 ---@param path string: full path to convert
 local function path_as_filename(path)
-    path = M.strip_path(path)
+    path = strip_path(path)
     return string.gsub(path, "/", ".") -- Replace slashes with dots
 end
 
@@ -27,7 +27,7 @@ function M.session_path(opts)
     local session_folder = opts.session_folder or opts.session_folder or vim.fn.stdpath("state") .. "/sessions"
     vim.fn.mkdir(session_folder, "p")
     if vim.fn.isdirectory(session_folder) ~= 1 then
-        vim.notify("[Snapshot] Failed to create session folder: " .. session_folder)
+        vim.notify("[Auto Sessions] Failed to create session folder: " .. session_folder)
         return ""
     end
 

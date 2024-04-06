@@ -1,3 +1,3 @@
-# snapshot.nvim
+# auto-sessions.nvim
 
 (WIP)
