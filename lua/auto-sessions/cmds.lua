@@ -49,23 +49,24 @@ function M.autosave_on_leave(opts, session_file, group)
     })
 end
 
--- function M.autoload_on_enter(opts, session_file, group)
---     if not opts.auto_load then
---         return
---     end
---     vim.api.nvim_create_autocmd({ "VimEnter" }, {
---         group = group,
---         desc = "Load session on enter",
---         callback = function()
---             if vim.fn.filereadable(session_file) ~= 1 then
---                 vim.notify("Session file not exists: " .. session_file)
---                 return
---             end
---
---             vim.cmd(string.format("source %s", session_file))
---             vim.notify("Loading " .. session_file)
---         end,
---     })
--- end
+function M.autoload_on_enter(opts, session_file, group)
+    if not opts.auto_load then
+        return
+    end
+    vim.api.nvim_create_autocmd({ "VimEnter" }, {
+        group = group,
+        desc = "Load session on enter",
+        nested = true,
+        callback = function()
+            if vim.fn.filereadable(session_file) ~= 1 then
+                vim.notify("Session file not exists: " .. session_file)
+                return
+            end
+
+            vim.cmd(string.format("source %s", session_file))
+            vim.notify("Loading " .. session_file)
+        end,
+    })
+end
 
 return M
