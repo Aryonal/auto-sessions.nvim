@@ -17,6 +17,7 @@ end
 ---@param path string: full path to convert
 local function path_as_filename(path)
     path = strip_path(path)
+    ---TODO: replace `.` with `..`
     return string.gsub(path, "/", ".") -- Replace slashes with dots
 end
 
@@ -58,6 +59,27 @@ function M.merge_tbl(a, b)
     end
 
     return m
+end
+
+function M.save(opts)
+    local session_file = M.session_path(opts)
+    if session_file == "" then
+        return
+    end
+    vim.cmd(string.format("mksession! %s", session_file))
+end
+
+function M.load(opts)
+    local session_file = M.session_path(opts)
+    if session_file == "" then
+        return
+    end
+    if vim.fn.filereadable(session_file) ~= 1 then
+        vim.notify("Session file not exists: " .. session_file)
+        return
+    end
+    vim.cmd(string.format("source %s", session_file))
+    vim.notify("Loading " .. session_file)
 end
 
 return M

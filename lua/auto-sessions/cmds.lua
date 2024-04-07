@@ -1,42 +1,35 @@
 ---@diagnostic disable: unused-local
+local util = require("auto-sessions.util")
+
 local M = {}
 
 ---create session save command
 ---@param opts any
----@param session_file any
-function M.create_cmd_save(opts, session_file)
+function M.create_cmd_save(opts)
     vim.api.nvim_create_user_command(
         "SaveLocalSession",
         function()
-            vim.cmd(string.format("source %s", session_file))
+            util.save(opts)
         end,
         { desc = "Save local session" })
 end
 
 ---create session load command
 ---@param opts any
----@param session_file any
-function M.create_cmd_load(opts, session_file)
+function M.create_cmd_load(opts)
     vim.api.nvim_create_user_command(
         "LoadLocalSession",
         function()
-            if vim.fn.filereadable(session_file) ~= 1 then
-                vim.notify("Session file not exists: " .. session_file)
-                return
-            end
-
-            vim.cmd(string.format("source %s", session_file))
-            vim.notify("Loading " .. session_file)
+            util.load(opts)
         end,
         { desc = "Load local session" })
 end
 
 ---register autocmds for autosave on leave
 ---@param opts table: option table
----@param session_file string: session file path
 ---@param group any: autocmd group
-function M.autosave_on_leave(opts, session_file, group)
-    if not opts.auto_save then
+function M.autosave_on_leave(opts, group)
+    if not opts.auto_save_on_leave then
         return
     end
     -- TODO: check group is nil
@@ -44,27 +37,50 @@ function M.autosave_on_leave(opts, session_file, group)
         group = group,
         desc = "Save session on leave",
         callback = function()
-            vim.cmd(string.format("mksession! %s", session_file))
+            ---TODO: check if enpty buffer
+            util.save(opts)
         end,
     })
 end
 
-function M.autoload_on_enter(opts, session_file, group)
-    if not opts.auto_load then
+---register autocmds for autosave on leave
+---@param opts table: option table
+---@param group any: autocmd group
+function M.autosave_on_win_change(opts, group)
+    if not opts.auto_save_on_win_change then
+        return
+    end
+    -- TODO: check group is nil
+    vim.api.nvim_create_autocmd({ "WinNew", "WinResized", "WinClosed" }, {
+        group = group,
+        desc = "Save snapshot on win change",
+        callback = function()
+            util.save_n(opts)
+        end,
+    })
+end
+
+---register autocmds for autoload on enter
+---@param opts table: option table
+---@param group any: autocmd group
+function M.autoload_on_enter(opts, group)
+    if not opts.auto_load_on_enter then
         return
     end
     vim.api.nvim_create_autocmd({ "VimEnter" }, {
         group = group,
         desc = "Load session on enter",
         nested = true,
-        callback = function()
-            if vim.fn.filereadable(session_file) ~= 1 then
-                vim.notify("Session file not exists: " .. session_file)
+        callback = function(args)
+            local is_directory = vim.fn.isdirectory(args.file) == 1
+            local is_real_file = vim.fn.filereadable(args.file) == 1
+            local no_name = args.file == "" and vim.bo[args.buf].buftype == ""
+
+            if not no_name and not opts.override_non_empty then
                 return
             end
 
-            vim.cmd(string.format("source %s", session_file))
-            vim.notify("Loading " .. session_file)
+            util.load(opts)
         end,
     })
 end
