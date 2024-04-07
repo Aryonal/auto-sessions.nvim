@@ -9,19 +9,19 @@ local default_opts = {
 }
 
 function M.setup(opts)
-    local util = require("auto-sessions.util")
+    local util = require("sessions.util")
 
     opts = opts or {}
     opts = util.merge_tbl(default_opts, opts)
 
     ---set up autocmds
-    local group = vim.api.nvim_create_augroup("aryonal/auto-sessions.nvim", { clear = true })
-    require("auto-sessions.cmds").autosave_on_leave(opts, group)
-    require("auto-sessions.cmds").autoload_on_enter(opts, group)
+    local group = vim.api.nvim_create_augroup("aryonal/sessions.nvim", { clear = true })
+    require("sessions.cmd").autosave_on_leave(opts, group)
+    require("sessions.cmd").autoload_on_enter(opts, group)
 
     ---set up commands
-    require("auto-sessions.cmds").create_cmd_save(opts)
-    require("auto-sessions.cmds").create_cmd_load(opts)
+    require("sessions.cmd").create_cmd_save(opts)
+    require("sessions.cmd").create_cmd_load(opts)
 
     vim.o.sessionoptions = opts.sessionoptions
 end

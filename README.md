@@ -1,6 +1,6 @@
 Still WIP.
 
-# auto-sessions.nvim
+# sessions.nvim
 
 An experimental plugin for session management. Extract from personal config.
 
@@ -16,9 +16,9 @@ An experimental plugin for session management. Extract from personal config.
 
 ```lua
 {
-    "aryonal/auto-sessions.nvim",
+    "aryonal/sessions.nvim",
     init = function()
-        require("auto-sessions").setup({
+        require("sessions").setup({
             auto_save_on_leave = true,
             auto_load_on_enter = false,
         })

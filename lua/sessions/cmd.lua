@@ -1,5 +1,5 @@
 ---@diagnostic disable: unused-local
-local util = require("auto-sessions.util")
+local util = require("sessions.util")
 
 local M = {}
 
