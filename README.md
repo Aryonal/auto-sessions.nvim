@@ -48,7 +48,8 @@ Default options
 
 This plugin is mainly for learning neovim plugin dev, and playing with fun ideas around sessions.
 
-- [ ] big fix
+- [ ] bug fix
+- [ ] automation for vimdoc, tests
 - [ ] ignore certain filetypes for save on leave
 - [ ] undo window close/open, like Shift-Cmd-T
 
