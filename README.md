@@ -12,7 +12,7 @@ An experimental plugin for session management. Extract from personal config.
 ## Install
 
 <details>
-    <summary>lazy.vim</summary>
+    <summary>lazy.nvim</summary>
 
 ```lua
 {
