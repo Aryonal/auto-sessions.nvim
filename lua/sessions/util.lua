@@ -79,7 +79,6 @@ function M.load(opts)
         return
     end
     vim.cmd(string.format("source %s", session_file))
-    vim.notify("Loading " .. session_file)
 end
 
 return M
