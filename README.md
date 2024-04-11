@@ -1,8 +1,6 @@
-Still WIP.
-
 # sessions.nvim
 
-An experimental plugin for session management. Extract from personal config.
+An experimental plugin for neovim session management.
 
 ## Features
 
@@ -44,14 +42,21 @@ Default options
 }
 ```
 
-## Roadmap
+## Tips
 
-This plugin is mainly for learning neovim plugin dev, and playing with fun ideas around sessions.
+### Undo `<C-w>o`
 
-- [ ] bug fix
-- [ ] automation for vimdoc, tests
-- [ ] ignore certain filetypes for save on leave
-- [ ] undo window close/open, like Shift-Cmd-T
+```lua
+vim.keymap.set(
+    "<C-w>o",
+    "<cmd>SaveLocalSession<CR><C-w>o",
+)
+vim.keymap.set(
+    "<C-w>u",
+    "<cmd>LoadLocalSession<CR>",
+    { desc = "Restore full screen" }
+)
+```
 
 ## Relevant
 
