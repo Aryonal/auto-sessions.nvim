@@ -42,21 +42,9 @@ Default options
 }
 ```
 
-## Tips
+## Roadmap
 
-### Undo `<C-w>o`
-
-```lua
-vim.keymap.set(
-    "<C-w>o",
-    "<cmd>SaveLocalSession<CR><C-w>o",
-)
-vim.keymap.set(
-    "<C-w>u",
-    "<cmd>LoadLocalSession<CR>",
-    { desc = "Restore full screen" }
-)
-```
+- TBD
 
 ## Relevant
 
