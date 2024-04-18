@@ -1,6 +1,6 @@
 # sessions.nvim
 
-An experimental plugin for neovim session management.
+A toy plugin for neovim session management.
 
 ## Features
 
