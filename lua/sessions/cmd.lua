@@ -64,7 +64,7 @@ end
 ---@param opts table: option table
 ---@param group any: autocmd group
 function M.autoload_on_enter(opts, group)
-    if not opts.auto_load_on_enter then
+    if not opts.auto_load_on_enter and not opts.force_load_on_enter then
         return
     end
     vim.api.nvim_create_autocmd({ "VimEnter" }, {
@@ -76,11 +76,14 @@ function M.autoload_on_enter(opts, group)
             local is_real_file = vim.fn.filereadable(args.file) == 1
             local no_name = args.file == "" and vim.bo[args.buf].buftype == ""
 
-            if not no_name and not opts.override_non_empty then
-                return
-            end
+            local bare = #(vim.v.argv) <= 2 --- [ nvim, --embed ]
 
-            util.load(opts)
+            local loadable = no_name and bare
+            loadable = loadable or (opts.override_non_empty or opts.force_load_on_enter)
+
+            if loadable then
+                util.load(opts)
+            end
         end,
     })
 end

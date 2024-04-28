@@ -3,7 +3,8 @@ local M = {}
 local default_opts = {
     auto_save_on_leave = true,
     auto_load_on_enter = false,
-    override_non_empty = false,
+    override_non_empty = false,  -- deprecated
+    force_load_on_enter = false, -- force load on enter, overrides original buffer, if this option is true, ignore override_non_empty and auto_load_on_enter
     session_folder = vim.fn.stdpath("state") .. "/sessions",
     sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,terminal",
 }
